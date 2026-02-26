@@ -1,15 +1,15 @@
+const router = require('express').Router();
+const user = require('./user');
+const merchant = require('./merchant');
+const login = require('./login');
+const home = require('./home');
+const Controller = require('../controllers/controller');
+const { requireLogin, authorizeRoles } = require('../middlewares/auth');
 
-const router = require('express').Router()
-const user = require('./user.js')
-const merchant = require('./merchant.js')
-const login = require('./login.js')
-const home = require('./home.js')
+router.get('/', Controller.landing);
+router.use('/', login);
+router.use('/homes', requireLogin, home);
+router.use('/users', requireLogin, authorizeRoles('merchant'), user);
+router.use('/merchants', requireLogin, merchant);
 
-const Controller = require('../controllers/controller.js')
-
-// router.get('/', Controller.home)
-router.use("/homes", home)
-router.use("/users", user)
-router.use("/merchants", merchant)
-
-module.exports = router
+module.exports = router;

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard</title>
+</head>
+<body>
+  <%- include('header') %>
+
+  <main style="padding: 16px;">
+    <h2>Dashboard User</h2>
+
+    <% if (success) { %><p style="color: green;"><%= success %></p><% } %>
+    <% if (error) { %><p style="color: red;"><%= error %></p><% } %>
+
+    <% const currency = userData && userData.Profile ? userData.Profile.currency : 'IDR'; %>
+
+    <p>Total Budget Bulanan: <strong><%= helpers.formatCurrency(userData && userData.Profile ? userData.Profile.monthlyBudget : 0, currency) %></strong></p>
+    <p>Total Terpakai: <strong><%= helpers.formatCurrency(totalSpent, currency) %></strong></p>
+    <p>Sisa Budget: <strong><%= helpers.formatCurrency(remainingBudget, currency) %></strong></p>
+
+    <p><a href="/homes/export/pdf">Export PDF</a></p>
+    <p><a href="/merchants">Pilih Merchant + Add Transaksi</a></p>
+
+    <h3>Riwayat Transaksi</h3>
+
+    <% if (transactions && transactions.length) { %>
+      <table border="1" cellpadding="6" cellspacing="0" style="width: 100%;">
+        <tr>
+          <th>Tanggal</th>
+          <th>Merchant</th>
+          <th>Qty</th>
+          <th>Amount</th>
+        </tr>
+        <% transactions.forEach((el) => { %>
+          <tr>
+            <td><%= new Date(el.createdAt).toLocaleString('id-ID') %></td>
+            <td><%= el.Merchants && el.Merchants.length ? el.Merchants.map((m) => m.name).join(', ') : '-' %></td>
+            <td><%= el.quantity || 1 %></td>
+            <td><%= el.formattedAmount %></td>
+          </tr>
+        <% }) %>
+      </table>
+    <% } else { %>
+      <p>Belum ada transaksi.</p>
+    <% } %>
+  </main>
+</body>
+</html>

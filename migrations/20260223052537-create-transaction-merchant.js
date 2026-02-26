@@ -9,8 +9,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      
       transactionId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: 'Transactions',
           key: 'id'
@@ -18,9 +20,9 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-
       merchantId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: 'Merchants',
           key: 'id'
@@ -36,6 +38,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
+    });
+
+    await queryInterface.addConstraint('TransactionMerchants', {
+      fields: ['transactionId', 'merchantId'],
+      type: 'unique',
+      name: 'transaction_merchants_transaction_merchant_unique'
     });
   },
   async down(queryInterface, Sequelize) {

@@ -4,13 +4,7 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class TransactionMerchant extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
       TransactionMerchant.belongsTo(models.Transaction, {
         foreignKey: 'transactionId'
       });
@@ -20,12 +14,30 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   TransactionMerchant.init({
-    transactionId: DataTypes.INTEGER,
-    merchantId: DataTypes.INTEGER
+    transactionId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Transactions',
+        key: 'id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    },
+    merchantId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Merchants',
+        key: 'id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    }
   }, {
     sequelize,
     modelName: 'TransactionMerchant',
   });
+
   return TransactionMerchant;
 };

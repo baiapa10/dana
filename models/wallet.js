@@ -4,13 +4,7 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Wallet extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
       Wallet.belongsTo(models.User, {
         foreignKey: 'userId'
       });
@@ -20,11 +14,37 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   Wallet.init({
-    balance: DataTypes.INTEGER,
-    status: DataTypes.STRING,
+    balance: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Balance wajib diisi'
+        },
+        min: {
+          args: [0],
+          msg: 'Balance tidak boleh negatif'
+        }
+      }
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Status wajib diisi'
+        },
+        isIn: {
+          args: [['active', 'inactive']],
+          msg: 'Status hanya boleh active atau inactive'
+        }
+      }
+    },
     userId: {
       type: DataTypes.INTEGER,
+      unique: true,
       references: {
         model: 'Users',
         key: 'id'
@@ -36,5 +56,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Wallet',
   });
+
   return Wallet;
 };

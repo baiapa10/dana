@@ -4,25 +4,57 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Profile extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
       Profile.belongsTo(models.User, {
         foreignKey: 'userId'
       });
     }
   }
+
   Profile.init({
-    monthlyBudget: DataTypes.INTEGER,
-    currency: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER
+    monthlyBudget: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Monthly budget wajib diisi'
+        },
+        isInt: {
+          msg: 'Monthly budget harus berupa angka bulat'
+        },
+        minimumBudget(value) {
+          if (Number(value) < 100000) {
+            throw new Error('Monthly budget minimal 100000');
+          }
+        }
+      }
+    },
+    currency: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Currency wajib diisi'
+        },
+        notEmpty: {
+          msg: 'Currency tidak boleh kosong'
+        }
+      }
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      unique: true,
+      references: {
+        model: 'Users',
+        key: 'id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    }
   }, {
     sequelize,
     modelName: 'Profile',
   });
+
   return Profile;
 };

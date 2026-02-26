@@ -13,10 +13,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       currency: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       userId: {
         type: Sequelize.INTEGER,
+        unique: true,
         references: {
           model: 'Users',
           key: 'id'

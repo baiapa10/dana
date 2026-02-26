@@ -1,10 +1,8 @@
-const Controller = require('../controllers/controller')
+const Controller = require('../controllers/controller');
+const { authorizeRoles } = require('../middlewares/auth');
+const router = require('express').Router();
 
-const router = require('express').Router()
+router.get('/', Controller.dashboard);
+router.get('/export/pdf', authorizeRoles('user'), Controller.exportUserPdf);
 
-
-router.get('/', Controller.home)
-
-
-
-module.exports = router
+module.exports = router;

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landing Page</title>
+</head>
+<body>
+  <%- include('header') %>
+
+  <main style="padding: 16px;">
+    <h1>Personal Finance Tracker</h1>
+    <p>Aplikasi demo ERD User, Profile, Wallet, Transaction, Merchant.</p>
+    <% if (!currentUser) { %>
+      <a href="/register">Mulai Register</a>
+      <span> | </span>
+      <a href="/login">Login</a>
+    <% } else { %>
+      <a href="/homes">Masuk ke Dashboard</a>
+    <% } %>
+  </main>
+</body>
+</html>

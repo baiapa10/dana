@@ -4,13 +4,7 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Transaction extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
       Transaction.belongsTo(models.Wallet, {
         foreignKey: 'walletId'
       });
@@ -19,14 +13,62 @@ module.exports = (sequelize, DataTypes) => {
         through: models.TransactionMerchant,
         foreignKey: 'transactionId'
       });
+
+      Transaction.hasMany(models.TransactionMerchant, {
+        foreignKey: 'transactionId'
+      });
+    }
+
+    get formattedAmount() {
+      const amount = this.amount || 0;
+      return `Rp ${amount.toLocaleString('id-ID')}`;
     }
   }
+
   Transaction.init({
-    amount: DataTypes.INTEGER,
-    walletId: DataTypes.INTEGER
+    amount: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Amount wajib diisi'
+        },
+        min: {
+          args: [1],
+          msg: 'Amount minimal 1'
+        }
+      }
+    },
+    quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+      validate: {
+        notNull: {
+          msg: 'Quantity wajib diisi'
+        },
+        isInt: {
+          msg: 'Quantity harus bilangan bulat'
+        },
+        min: {
+          args: [1],
+          msg: 'Quantity minimal 1'
+        }
+      }
+    },
+    walletId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Wallets',
+        key: 'id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    }
   }, {
     sequelize,
     modelName: 'Transaction',
   });
+
   return Transaction;
 };
