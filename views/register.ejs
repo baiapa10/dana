@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+</head>
+<body>
+  <%- include('header') %>
+
+  <main style="padding: 16px; max-width: 560px;">
+    <h2>Register</h2>
+
+    <% if (errors && errors.length) { %>
+      <ul style="color: red;">
+        <% errors.forEach((err) => { %>
+          <li><%= err %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+
+    <form action="/register" method="post">
+      <div style="margin-bottom: 8px;">
+        <label>Nama</label><br>
+        <input type="text" name="name" value="<%= oldInput.name || '' %>">
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <label>Email</label><br>
+        <input type="email" name="email" value="<%= oldInput.email || '' %>">
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <label>Password</label><br>
+        <input type="password" name="password">
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <label>Phone</label><br>
+        <input type="text" name="phone" value="<%= oldInput.phone || '' %>">
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <label>Role</label><br>
+        <select name="role" >
+          <option value="" <%= !oldInput.role ? 'selected' : '' %> disabled>-- pilih role --</option>
+          <option value="user" <%= oldInput.role === 'user' ? 'selected' : '' %>>User</option>
+          <option value="merchant" <%= oldInput.role === 'merchant' ? 'selected' : '' %>>Merchant</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <label>Monthly Budget</label><br>
+        <input type="number" name="monthlyBudget" value="<%= oldInput.monthlyBudget || '' %>">
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <label>Currency</label><br>
+        <input type="text" name="currency" value="<%= oldInput.currency || 'IDR' %>">
+      </div>
+
+      <button type="submit">Register</button>
+    </form>
+  </main>
+</body>
+</html>

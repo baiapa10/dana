@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users</title>
+</head>
+<body>
+  <%- include('header') %>
+
+  <main style="padding: 16px;">
+    <h2>Users</h2>
+    <table border="1" cellpadding="6" cellspacing="0">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Budget</th>
+        <th>Wallet Status</th>
+      </tr>
+      <% users.forEach((user) => { %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.name %></td>
+          <td><%= user.role %></td>
+          <td><%= user.email %></td>
+          <td><%= user.maskedPhone %></td>
+          <td><%= user.Profile ? helpers.formatCurrency(user.Profile.monthlyBudget, user.Profile.currency) : '-' %></td>
+          <td><%= user.Wallet ? user.Wallet.status : '-' %></td>
+        </tr>
+      <% }) %>
+    </table>
+  </main>
+</body>
+</html>

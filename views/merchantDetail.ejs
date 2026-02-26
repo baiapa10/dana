@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merchant Detail</title>
+</head>
+<body>
+  <%- include('header') %>
+
+  <main style="padding: 16px;">
+    <h2>Merchant Detail</h2>
+    <p><strong>Name:</strong> <%= merchant.name %></p>
+    <p><strong>Category:</strong> <%= merchant.category %></p>
+
+    <h3>Transactions</h3>
+    <% if (merchant.Transactions && merchant.Transactions.length) { %>
+      <table border="1" cellpadding="6" cellspacing="0">
+        <tr>
+          <th>ID</th>
+          <th>Amount</th>
+          <th>User</th>
+        </tr>
+        <% merchant.Transactions.forEach((el) => { %>
+          <tr>
+            <td><%= el.id %></td>
+            <td><%= el.formattedAmount %></td>
+            <td>
+              <%= el.Wallet && el.Wallet.User ? el.Wallet.User.name : '-' %>
+            </td>
+          </tr>
+        <% }) %>
+      </table>
+    <% } else { %>
+      <p>Belum ada transaksi.</p>
+    <% } %>
+  </main>
+</body>
+</html>

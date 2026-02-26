@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Merchant</title>
+</head>
+<body>
+  <%- include('header') %>
+
+  <main style="padding: 16px; max-width: 500px;">
+    <h2>Edit Merchant</h2>
+
+    <% if (errors && errors.length) { %>
+      <ul style="color: red;">
+        <% errors.forEach((err) => { %>
+          <li><%= err %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+
+    <form action="/merchants/<%= merchant.id %>/edit" method="post">
+      <div style="margin-bottom: 8px;">
+        <label>Name</label><br>
+        <input type="text" name="name" value="<%= merchant.name %>">
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <label>Category</label><br>
+        <input type="text" name="category" value="<%= merchant.category %>">
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <label>Harga Satuan</label><br>
+        <input type="number" name="price" min="1" value="<%= merchant.price %>">
+      </div>
+
+      <button type="submit">Update</button>
+    </form>
+  </main>
+</body>
+</html>

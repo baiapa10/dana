@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+</head>
+<body>
+  <%- include('header') %>
+
+  <main style="padding: 16px;">
+    <h2>Dashboard (Eager Loading 4 Tabel)</h2>
+
+    <% const role = currentUser && currentUser.role ? String(currentUser.role).toLowerCase() : ''; %>
+    <% const isMerchant = role === 'merchant'; %>
+
+    <p style="font-size: 12px; color: #666;">Role aktif: <%= role || '-' %></p>
+
+    <% if (isMerchant) { %>
+      <p><a href="/merchants/add">+ Add Merchant</a></p>
+    <% } %>
+
+    <% if (success) { %><p style="color: green;"><%= success %></p><% } %>
+    <% if (error) { %><p style="color: red;"><%= error %></p><% } %>
+
+    <% users.forEach((user) => { %>
+      <section style="border: 1px solid #ddd; padding: 12px; margin-bottom: 12px;">
+        <h3><%= user.name %> (<%= user.maskedPhone %>)</h3>
+        <p>Email: <%= user.email %></p>
+        <p>Budget: <%= helpers.formatCurrency(user.Profile ? user.Profile.monthlyBudget : 0, user.Profile ? user.Profile.currency : 'IDR') %></p>
+
+        <% if (user.Wallet && user.Wallet.Transactions && user.Wallet.Transactions.length) { %>
+          <table border="1" cellpadding="6" cellspacing="0">
+            <tr>
+              <th>Transaction ID</th>
+              <th>Amount</th>
+              <th>Merchant</th>
+            </tr>
+            <% user.Wallet.Transactions.forEach((el) => { %>
+              <tr>
+                <td><%= el.id %></td>
+                <td><%= el.formattedAmount %></td>
+                <td>
+                  <%= el.Merchants && el.Merchants.length ? el.Merchants.map((m) => m.name).join(', ') : '-' %>
+                </td>
+              </tr>
+            <% }) %>
+          </table>
+        <% } else { %>
+          <p>Belum ada transaksi.</p>
+        <% } %>
+      </section>
+    <% }) %>
+  </main>
+</body>
+</html>

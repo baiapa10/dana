@@ -1,0 +1,22 @@
+<nav style="padding: 12px; border-bottom: 1px solid #ddd; margin-bottom: 16px;">
+  <a href="/" style="margin-right: 12px;">Landing</a>
+  <% const role = currentUser && currentUser.role ? String(currentUser.role).toLowerCase() : ''; %>
+  <% const isMerchant = role === 'merchant'; %>
+  <% const isUser = role === 'user'; %>
+  <% if (currentUser) { %>
+    <a href="/homes" style="margin-right: 12px;">Dashboard</a>
+    <% if (isMerchant) { %>
+      <a href="/merchants" style="margin-right: 12px;">Merchants</a>
+      <a href="/merchants/add" style="margin-right: 12px;">Add Merchant</a>
+      <a href="/users" style="margin-right: 12px;">Users</a>
+    <% } %>
+    <% if (isUser) { %>
+      <a href="/merchants" style="margin-right: 12px;">Add Transaction</a>
+    <% } %>
+    <span style="margin-right: 12px;">Hi, <%= currentUser.name %> (<%= currentUser.role || '-' %>)</span>
+    <a href="/logout">Logout</a>
+  <% } else { %>
+    <a href="/register" style="margin-right: 12px;">Register</a>
+    <a href="/login">Login</a>
+  <% } %>
+</nav>
