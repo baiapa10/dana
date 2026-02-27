@@ -1,5 +1,5 @@
 'use strict';
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const {
   Model
 } = require('sequelize');
@@ -77,7 +77,7 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Password tidak boleh kosong'
         },
         len: {
-          args: [6, 66],
+          args: [8, 255],
           msg: 'Password minimal 6 karakter'
         }
       }

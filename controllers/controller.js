@@ -22,6 +22,7 @@ class Controller {
     const normalizedEmail = String(req.body.email || '').trim().toLowerCase();
     const { name, password, phone, monthlyBudget, currency } = req.body;
     const selectedRole = String(req.body.role || '').trim().toLowerCase();
+    const isUserRole = selectedRole === 'user';
     const errors = [];
 
     try {
@@ -36,12 +37,13 @@ class Controller {
         phone,
         role: selectedRole || undefined
       });
-      const profileDraft = Profile.build({ monthlyBudget, currency });
+      const validations = [userDraft.validate()];
+      if (isUserRole) {
+        const profileDraft = Profile.build({ monthlyBudget, currency });
+        validations.push(profileDraft.validate());
+      }
 
-      const validationResults = await Promise.allSettled([
-        userDraft.validate(),
-        profileDraft.validate()
-      ]);
+      const validationResults = await Promise.allSettled(validations);
 
       validationResults.forEach((result) => {
         if (result.status === 'rejected') {
@@ -66,31 +68,33 @@ class Controller {
       const trx = await sequelize.transaction();
 
       try {
-      const user = await User.create(
-        { name, email: normalizedEmail, password, phone, role: selectedRole },
-        { transaction: trx }
-      );
+        const user = await User.create(
+          { name, email: normalizedEmail, password, phone, role: selectedRole },
+          { transaction: trx }
+        );
 
-      await Profile.create(
-        {
-          monthlyBudget,
-          currency,
-          userId: user.id
-        },
-        { transaction: trx }
-      );
+        if (isUserRole) {
+          await Profile.create(
+            {
+              monthlyBudget,
+              currency,
+              userId: user.id
+            },
+            { transaction: trx }
+          );
 
-      await Wallet.create(
-        {
-          balance: monthlyBudget || 0,
-          status: 'active',
-          userId: user.id
-        },
-        { transaction: trx }
-      );
+          await Wallet.create(
+            {
+              balance: monthlyBudget || 0,
+              status: 'active',
+              userId: user.id
+            },
+            { transaction: trx }
+          );
+        }
 
-      await trx.commit();
-      res.redirect('/login?success=Registrasi berhasil, silakan login');
+        await trx.commit();
+        res.redirect('/login?success=Registrasi berhasil, silakan login');
       } catch (error) {
         await trx.rollback();
         res.status(400).render('register', {
@@ -160,13 +164,13 @@ class Controller {
 
         const transactions = await Transaction.findAll({
           where: { walletId: userData.Wallet.id },
-          include: [{ model: Merchant }],
+          include: [{ model: Merchant, paranoid: false }],
           order: [['createdAt', 'DESC']]
         });
 
         const totalSpent = transactions.reduce((sum, trx) => sum + trx.amount, 0);
         const monthlyBudget = userData.Profile ? userData.Profile.monthlyBudget : 0;
-        const remainingBudget = monthlyBudget - totalSpent;
+        const remainingBudget = userData.Wallet ? userData.Wallet.balance : (monthlyBudget - totalSpent);
 
         return res.render('dashboardUser', {
           userData,
@@ -179,6 +183,7 @@ class Controller {
       }
 
       const users = await User.findAll({
+        where: { role: 'user' },
         include: [
           { model: Profile },
           {
@@ -186,7 +191,7 @@ class Controller {
             include: [
               {
                 model: Transaction,
-                include: [{ model: Merchant }]
+                include: [{ model: Merchant, paranoid: false }]
               }
             ]
           }
@@ -204,6 +209,52 @@ class Controller {
     }
   }
 
+  static async topUpWallet(req, res) {
+    const amount = Number(req.body.amount);
+    const trx = await sequelize.transaction();
+
+    try {
+      if (!Number.isInteger(amount) || amount <= 0) {
+        throw new Error('Nominal top up harus angka bulat dan lebih dari 0');
+      }
+
+      const wallet = await Wallet.findOne({
+        where: { userId: req.currentUser.id },
+        transaction: trx,
+        lock: trx.LOCK.UPDATE
+      });
+
+      if (!wallet) {
+        throw new Error('Wallet user tidak ditemukan');
+      }
+
+      const profile = await Profile.findOne({
+        where: { userId: req.currentUser.id },
+        transaction: trx,
+        lock: trx.LOCK.UPDATE
+      });
+
+      if (!profile) {
+        throw new Error('Profile user tidak ditemukan');
+      }
+
+      await wallet.update(
+        { balance: wallet.balance + amount },
+        { transaction: trx }
+      );
+
+      await profile.update(
+        { monthlyBudget: profile.monthlyBudget + amount },
+        { transaction: trx }
+      );
+
+      await trx.commit();
+      return res.redirect('/homes?success=Top up berhasil');
+    } catch (error) {
+      await trx.rollback();
+      return res.redirect(`/homes?error=${encodeURIComponent(error.message)}`);
+    }
+  }
   static async exportUserPdf(req, res) {
     try {
       const userData = await User.findByPk(req.currentUser.id, {
@@ -216,13 +267,13 @@ class Controller {
 
       const transactions = await Transaction.findAll({
         where: { walletId: userData.Wallet.id },
-        include: [{ model: Merchant }],
+        include: [{ model: Merchant, paranoid: false }],
         order: [['createdAt', 'DESC']]
       });
 
       const totalSpent = transactions.reduce((sum, trx) => sum + trx.amount, 0);
       const monthlyBudget = userData.Profile ? userData.Profile.monthlyBudget : 0;
-      const remainingBudget = monthlyBudget - totalSpent;
+      const remainingBudget = userData.Wallet ? userData.Wallet.balance : (monthlyBudget - totalSpent);
       const currency = userData.Profile ? userData.Profile.currency : 'IDR';
 
       const doc = new PDFDocument({ margin: 40, size: 'A4' });
@@ -464,3 +515,8 @@ class Controller {
 }
 
 module.exports = Controller;
+
+
+
+
+

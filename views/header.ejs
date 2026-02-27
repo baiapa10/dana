@@ -13,8 +13,10 @@
     <% if (isUser) { %>
       <a href="/merchants" style="margin-right: 12px;">Add Transaction</a>
     <% } %>
-    <span style="margin-right: 12px;">Hi, <%= currentUser.name %> (<%= currentUser.role || '-' %>)</span>
-    <a href="/logout">Logout</a>
+    <span style="margin-right: 12px;">Hi, <%= currentUser.name %> </span>
+    <span style="margin-left: 620px; position: absolute;">
+      <a href="/logout">Logout</a>
+    </span>
   <% } else { %>
     <a href="/register" style="margin-right: 12px;">Register</a>
     <a href="/login">Login</a>

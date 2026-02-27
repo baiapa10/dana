@@ -9,7 +9,7 @@
   <%- include('header') %>
 
   <main style="padding: 16px;">
-    <h2>Saham List</h2>
+    <h2>Jenis-jenis Reksadana</h2>
 
     <% const safeRole = typeof currentRole !== 'undefined' ? currentRole : ((currentUser && currentUser.role) ? String(currentUser.role).toLowerCase() : ''); %>
     <% const safeIsMerchant = typeof isMerchant !== 'undefined' ? isMerchant : safeRole === 'merchant'; %>
@@ -27,7 +27,6 @@
     <form action="/merchants" method="get" style="margin-bottom: 12px;">
       <input type="text" name="search" placeholder="Search name/category" value="<%= query.search || '' %>">
       <select name="sortBy">
-        <option value="createdAt" <%= query.sortBy === 'createdAt' ? 'selected' : '' %>>Created At</option>
         <option value="name" <%= query.sortBy === 'name' ? 'selected' : '' %>>Name</option>
         <option value="category" <%= query.sortBy === 'category' ? 'selected' : '' %>>Category</option>
         <option value="price" <%= query.sortBy === 'price' ? 'selected' : '' %>>Price</option>
@@ -39,9 +38,9 @@
       <button type="submit">Apply</button>
     </form>
 
-    <% if (safeIsMerchant) { %>
+    <!-- <% if (safeIsMerchant) { %>
       <a href="/merchants/add">+ Add Merchant</a>
-    <% } %>
+    <% } %> -->
 
     <table border="1" cellpadding="6" cellspacing="0" style="margin-top: 12px; width: 100%;">
       <tr>

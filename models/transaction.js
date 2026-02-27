@@ -47,9 +47,6 @@ module.exports = (sequelize, DataTypes) => {
         notNull: {
           msg: 'Quantity wajib diisi'
         },
-        isInt: {
-          msg: 'Quantity harus bilangan bulat'
-        },
         min: {
           args: [1],
           msg: 'Quantity minimal 1'
