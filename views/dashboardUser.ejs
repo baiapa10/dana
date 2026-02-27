@@ -5,42 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Dashboard</title>
 </head>
-<body>
+<body style="margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(120deg, #f8fbff 0%, #eef3ff 100%); color: #1e293b;">
   <%- include('header') %>
 
-  <main style="padding: 16px;">
-    <h2>Dashboard User</h2>
+  <main style="padding: 24px; max-width: 980px; margin: 24px auto; background: #ffffff; border: 1px solid #dbeafe; border-radius: 14px; box-shadow: 0 10px 25px rgba(30, 64, 175, 0.08);">
+    <h2 style="margin: 0 0 14px; font-size: 30px; color: #0f172a;">Dashboard User</h2>
 
-    <% if (success) { %><p style="color: green;"><%= success %></p><% } %>
-    <% if (error) { %><p style="color: red;"><%= error %></p><% } %>
+    <% if (success) { %><p style="color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; padding: 10px 12px;"><%= success %></p><% } %>
+    <% if (error) { %><p style="color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 10px 12px;"><%= error %></p><% } %>
 
     <% const currency = userData && userData.Profile ? userData.Profile.currency : 'IDR'; %>
 
-    <p>Total Budget Bulanan: <strong><%= helpers.formatCurrency(userData && userData.Profile ? userData.Profile.monthlyBudget : 0, currency) %></strong></p>
-    <p>Total Terpakai: <strong><%= helpers.formatCurrency(totalSpent, currency) %></strong></p>
+    <p style="margin: 0 0 8px;">Total Budget Bulanan: <strong><%= helpers.formatCurrency(userData && userData.Profile ? userData.Profile.monthlyBudget : 0, currency) %></strong></p>
+    <p style="margin: 0 0 14px;">Total Terpakai: <strong><%= helpers.formatCurrency(totalSpent, currency) %></strong></p>
 
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px;">
       <p style="margin: 0;">Sisa Budget: <strong><%= helpers.formatCurrency(remainingBudget, currency) %></strong></p>
-      <button type="button" id="toggleTopup">Top Up</button>
+      <button type="button" id="toggleTopup" style="border: 0; border-radius: 10px; background: #2563eb; color: #ffffff; padding: 10px 14px; font-weight: 600; cursor: pointer;">Top Up</button>
     </div>
 
     <form id="topupForm" action="/homes/topup" method="post" style="display: none; margin-bottom: 12px;">
-      <input type="number" name="amount" min="1" placeholder="Nominal top up" required>
-      <button type="submit">Submit Top Up</button>
+      <input type="number" name="amount" min="1" placeholder="Nominal top up" required style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 9px 12px;">
+      <button type="submit" style="border: 0; border-radius: 10px; background: #1d4ed8; color: #ffffff; padding: 9px 12px; font-weight: 600; cursor: pointer;">Submit Top Up</button>
     </form>
 
-    <p><a href="/homes/export/pdf">Export PDF</a></p>
-      <p><a href="/merchants"><button>Tambah Investasi?</button></a></p>
+    <p style="margin: 0 0 8px;"><a href="/homes/export/pdf" style="text-decoration: none; color: #1d4ed8; font-weight: 600;">Export PDF</a></p>
+      <p style="margin: 0 0 14px;"><a href="/merchants"><button style="border: 0; border-radius: 10px; background: #0f766e; color: #ffffff; padding: 9px 12px; font-weight: 600; cursor: pointer;">Tambah Investasi?</button></a></p>
 
-    <h3>Riwayat Transaksi</h3>
+    <h3 style="margin: 0 0 10px; color: #0f172a;">Riwayat Transaksi</h3>
 
     <% if (transactions && transactions.length) { %>
-      <table border="1" cellpadding="6" cellspacing="0" style="width: 100%;">
+      <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-color: #cbd5e1; border-collapse: collapse;">
         <tr>
-          <th>Tanggal</th>
-          <th>Merchant</th>
-          <th>Qty</th>
-          <th>Amount</th>
+          <th style="background: #eff6ff;">Tanggal</th>
+          <th style="background: #eff6ff;">Merchant</th>
+          <th style="background: #eff6ff;">Qty</th>
+          <th style="background: #eff6ff;">Amount</th>
         </tr>
         <% transactions.forEach((el) => { %>
           <tr>
@@ -52,7 +52,7 @@
         <% }) %>
       </table>
     <% } else { %>
-      <p>Belum ada transaksi.</p>
+      <p style="color: #64748b;">Belum ada transaksi.</p>
     <% } %>
   </main>
 

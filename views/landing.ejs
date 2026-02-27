@@ -5,18 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Landing Page</title>
 </head>
-<body>
+<body style="margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: radial-gradient(circle at top left, #e0f2fe, #f8fbff 45%, #eef2ff 100%); color: #1e293b;">
   <%- include('header') %>
 
-  <main style="padding: 16px;">
-    <h1>Personal Finance Tracker</h1>
-    <p>Aplikasi demo ERD User, Profile, Wallet, Transaction, Merchant.</p>
+  <main style="padding: 28px; max-width: 760px; margin: 36px auto; background: rgba(255, 255, 255, 0.92); border: 1px solid #dbeafe; border-radius: 16px; box-shadow: 0 16px 30px rgba(30, 64, 175, 0.08);">
+    <h1 style="margin: 0 0 10px; font-size: 38px; color: #0f172a;">Personal Finance Tracker</h1>
+    <p style="margin: 0 0 20px; color: #475569;">Aplikasi demo ERD User, Profile, Wallet, Transaction, Merchant.</p>
     <% if (!currentUser) { %>
-      <a href="/register">Mulai Register</a>
-      <span> | </span>
-      <a href="/login">Login</a>
+      <a href="/register" style="display: inline-block; text-decoration: none; border: 1px solid #1d4ed8; color: #1d4ed8; padding: 10px 14px; border-radius: 10px; font-weight: 600; margin-right: 8px;">Mulai Register</a>
+      <a href="/login" style="display: inline-block; text-decoration: none; background: #1d4ed8; color: #ffffff; padding: 10px 14px; border-radius: 10px; font-weight: 600;">Login</a>
     <% } else { %>
-      <a href="/homes">Masuk ke Dashboard</a>
+      <a href="/homes" style="display: inline-block; text-decoration: none; background: #1d4ed8; color: #ffffff; padding: 10px 14px; border-radius: 10px; font-weight: 600;">Masuk ke Dashboard</a>
     <% } %>
   </main>
 </body>

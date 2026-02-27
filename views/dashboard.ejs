@@ -5,37 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
 </head>
-<body>
+<body style="margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(120deg, #f8fbff 0%, #eef3ff 100%); color: #1e293b;">
   <%- include('header') %>
 
-  <main style="padding: 16px;">
-    <h2>Dashboard </h2>
+  <main style="padding: 24px; max-width: 1040px; margin: 24px auto;">
+    <h2 style="margin: 0 0 10px; font-size: 30px; color: #0f172a;">Dashboard </h2>
 
     <% const role = currentUser && currentUser.role ? String(currentUser.role).toLowerCase() : ''; %>
     <% const isMerchant = role === 'merchant'; %>
 
-    <p style="font-size: 12px; color: #666;">Role aktif: <%= role || '-' %></p>
+    <p style="font-size: 12px; color: #64748b; margin: 0 0 18px;">Role aktif: <%= role || '-' %></p>
 
     <!-- <% if (isMerchant) { %>
       <p><a href="/merchants/add">+ Add Merchant</a></p>
     <% } %> -->
 
-    <% if (success) { %><p style="color: green;"><%= success %></p><% } %>
-    <% if (error) { %><p style="color: red;"><%= error %></p><% } %>
+    <% if (success) { %><p style="color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; padding: 10px 12px;"><%= success %></p><% } %>
+    <% if (error) { %><p style="color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 10px 12px;"><%= error %></p><% } %>
 
     <% users.forEach((user) => { %>
-      <section style="border: 1px solid #ddd; padding: 12px; margin-bottom: 12px;">
-        <h3><%= user.name %> (<%= user.maskedPhone %>)</h3>
-        <p>Email: <%= user.email %></p>
-        <p>Budget: <%= helpers.formatCurrency(user.Profile ? user.Profile.monthlyBudget : 0, user.Profile ? user.Profile.currency : 'IDR') %></p>
+      <section style="border: 1px solid #dbeafe; background: #ffffff; border-radius: 14px; padding: 14px; margin-bottom: 14px; box-shadow: 0 6px 18px rgba(30, 64, 175, 0.06);">
+        <h3 style="margin: 0 0 8px; color: #0f172a;"><%= user.name %> (<%= user.maskedPhone %>)</h3>
+        <p style="margin: 0 0 6px;">Email: <%= user.email %></p>
+        <p style="margin: 0 0 12px;">Budget: <%= helpers.formatCurrency(user.Profile ? user.Profile.monthlyBudget : 0, user.Profile ? user.Profile.currency : 'IDR') %></p>
 
         <% if (user.Wallet && user.Wallet.Transactions && user.Wallet.Transactions.length) { %>
-          <table border="1" cellpadding="6" cellspacing="0">
+          <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-color: #cbd5e1; border-collapse: collapse; background: #ffffff;">
             <tr>
-              <th>Transaction ID</th>
-              <th>Amount</th>
-              <th>Quantity</th>
-              <th>Merchant</th>
+              <th style="background: #eff6ff;">Transaction ID</th>
+              <th style="background: #eff6ff;">Amount</th>
+              <th style="background: #eff6ff;">Quantity</th>
+              <th style="background: #eff6ff;">Merchant</th>
             </tr>
             <% user.Wallet.Transactions.forEach((el) => { %>
               <tr>
@@ -49,7 +49,7 @@
             <% }) %>
           </table>
         <% } else { %>
-          <p>Belum ada transaksi.</p>
+          <p style="margin: 0; color: #64748b;">Belum ada transaksi.</p>
         <% } %>
       </section>
     <% }) %>

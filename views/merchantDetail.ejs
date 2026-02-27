@@ -5,22 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Merchant Detail</title>
 </head>
-<body>
+<body style="margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(120deg, #f8fbff 0%, #eef3ff 100%); color: #1e293b;">
   <%- include('header') %>
 
-  <main style="padding: 16px;">
-    <h2>Merchant Detail</h2>
-    <p><strong>Name:</strong> <%= merchant.name %></p>
-    <p><strong>Category:</strong> <%= merchant.category %></p>
+  <main style="padding: 24px; max-width: 980px; margin: 24px auto; background: #ffffff; border: 1px solid #dbeafe; border-radius: 14px; box-shadow: 0 10px 25px rgba(30, 64, 175, 0.08);">
+    <h2 style="margin: 0 0 12px; font-size: 30px; color: #0f172a;">Merchant Detail</h2>
+    <p style="margin: 0 0 6px;"><strong>Name:</strong> <%= merchant.name %></p>
+    <p style="margin: 0 0 14px;"><strong>Category:</strong> <%= merchant.category %></p>
 
-    <h3>Transactions</h3>
+    <h3 style="margin: 0 0 10px; color: #0f172a;">Transactions</h3>
     <% if (merchant.Transactions && merchant.Transactions.length) { %>
-      <table border="1" cellpadding="6" cellspacing="0">
+      <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; border-color: #cbd5e1;">
         <tr>
-          <th>ID</th>
-          <th>User</th>
-          <th>Amount</th>
-          <th>Quantity</th>
+          <th style="background: #eff6ff;">ID</th>
+          <th style="background: #eff6ff;">User</th>
+          <th style="background: #eff6ff;">Amount</th>
+          <th style="background: #eff6ff;">Quantity</th>
         </tr>
         <% merchant.Transactions.forEach((el) => { %>
           <tr>
@@ -34,7 +34,7 @@
         <% }) %>
       </table>
     <% } else { %>
-      <p>Belum ada transaksi.</p>
+      <p style="color: #64748b;">Belum ada transaksi.</p>
     <% } %>
   </main>
 </body>

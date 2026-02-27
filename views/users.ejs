@@ -5,20 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Users</title>
 </head>
-<body>
+<body style="margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(120deg, #f8fbff 0%, #eef3ff 100%); color: #1e293b;">
   <%- include('header') %>
 
-  <main style="padding: 16px;">
-    <h2>Users</h2>
-    <table border="1" cellpadding="6" cellspacing="0">
+  <main style="padding: 24px; max-width: 1080px; margin: 24px auto; background: #ffffff; border: 1px solid #dbeafe; border-radius: 14px; box-shadow: 0 10px 25px rgba(30, 64, 175, 0.08);">
+    <h2 style="margin: 0 0 12px; font-size: 30px; color: #0f172a;">Users</h2>
+    <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; border-color: #cbd5e1;">
       <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Role</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Budget</th>
-        <th>Wallet Status</th>
+        <th style="background: #eff6ff;">ID</th>
+        <th style="background: #eff6ff;">Name</th>
+        <th style="background: #eff6ff;">Role</th>
+        <th style="background: #eff6ff;">Email</th>
+        <th style="background: #eff6ff;">Phone</th>
+        <th style="background: #eff6ff;">Budget</th>
+        <th style="background: #eff6ff;">Wallet Status</th>
       </tr>
       <% users.forEach((user) => { %>
         <tr>

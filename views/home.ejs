@@ -5,50 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Merchants</title>
 </head>
-<body>
+<body style="margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(120deg, #f8fbff 0%, #eef3ff 100%); color: #1e293b;">
   <%- include('header') %>
 
-  <main style="padding: 16px;">
-    <h2>Jenis-jenis Reksadana</h2>
+  <main style="padding: 24px; max-width: 1080px; margin: 24px auto; background: #ffffff; border: 1px solid #dbeafe; border-radius: 14px; box-shadow: 0 10px 25px rgba(30, 64, 175, 0.08);">
+    <h2 style="margin: 0 0 10px; font-size: 30px; color: #0f172a;">Jenis-jenis Reksadana</h2>
 
     <% const safeRole = typeof currentRole !== 'undefined' ? currentRole : ((currentUser && currentUser.role) ? String(currentUser.role).toLowerCase() : ''); %>
     <% const safeIsMerchant = typeof isMerchant !== 'undefined' ? isMerchant : safeRole === 'merchant'; %>
     <% const safeIsUser = safeRole === 'user'; %>
 
-    <p style="font-size: 12px; color: #666;">Role aktif: <%= safeRole || '-' %></p>
+    <p style="font-size: 12px; color: #64748b; margin: 0 0 10px;">Role aktif: <%= safeRole || '-' %></p>
 
     <% if (currentUserDetail && currentUserDetail.Wallet) { %>
-      <p>Saldo Wallet: <strong><%= helpers.formatCurrency(currentUserDetail.Wallet.balance, currentUserDetail.Profile ? currentUserDetail.Profile.currency : 'IDR') %></strong></p>
+      <p style="margin: 0 0 12px;">Saldo Wallet: <strong><%= helpers.formatCurrency(currentUserDetail.Wallet.balance, currentUserDetail.Profile ? currentUserDetail.Profile.currency : 'IDR') %></strong></p>
     <% } %>
 
-    <% if (success) { %><p style="color: green;"><%= success %></p><% } %>
-    <% if (error) { %><p style="color: red;"><%= error %></p><% } %>
+    <% if (success) { %><p style="color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; padding: 10px 12px;"><%= success %></p><% } %>
+    <% if (error) { %><p style="color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 10px 12px;"><%= error %></p><% } %>
 
-    <form action="/merchants" method="get" style="margin-bottom: 12px;">
-      <input type="text" name="search" placeholder="Search name/category" value="<%= query.search || '' %>">
-      <select name="sortBy">
+    <form action="/merchants" method="get" style="margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 8px;">
+      <input type="text" name="search" placeholder="Search name/category" value="<%= query.search || '' %>" style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 9px 12px; min-width: 220px;">
+      <select name="sortBy" style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 9px 12px; background: #ffffff;">
         <option value="name" <%= query.sortBy === 'name' ? 'selected' : '' %>>Name</option>
         <option value="category" <%= query.sortBy === 'category' ? 'selected' : '' %>>Category</option>
         <option value="price" <%= query.sortBy === 'price' ? 'selected' : '' %>>Price</option>
       </select>
-      <select name="order">
+      <select name="order" style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 9px 12px; background: #ffffff;">
         <option value="DESC" <%= query.order === 'DESC' ? 'selected' : '' %>>DESC</option>
         <option value="ASC" <%= query.order === 'ASC' ? 'selected' : '' %>>ASC</option>
       </select>
-      <button type="submit">Apply</button>
+      <button type="submit" style="border: 0; border-radius: 10px; background: #1d4ed8; color: #ffffff; padding: 9px 14px; font-weight: 600; cursor: pointer;">Apply</button>
     </form>
 
     <!-- <% if (safeIsMerchant) { %>
       <a href="/merchants/add">+ Add Merchant</a>
     <% } %> -->
 
-    <table border="1" cellpadding="6" cellspacing="0" style="margin-top: 12px; width: 100%;">
+    <table border="1" cellpadding="8" cellspacing="0" style="margin-top: 12px; width: 100%; border-collapse: collapse; border-color: #cbd5e1;">
       <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Category</th>
-        <th>Harga Satuan</th>
-        <th>Action</th>
+        <th style="background: #eff6ff;">ID</th>
+        <th style="background: #eff6ff;">Name</th>
+        <th style="background: #eff6ff;">Category</th>
+        <th style="background: #eff6ff;">Harga Satuan</th>
+        <th style="background: #eff6ff;">Action</th>
       </tr>
       <% data.forEach((el) => { %>
         <tr>
@@ -66,7 +66,7 @@
             <% if (safeIsUser) { %>
               <form action="/merchants/<%= el.id %>/transactions" method="post" style="display: inline-block; margin-left: 10px;">
                 <input type="number" name="quantity" min="1" placeholder="Qty" required style="width: 70px;">
-                <button type="submit">Add</button>
+                <button type="submit" style="border: 0; border-radius: 8px; background: #0f766e; color: #ffffff; padding: 6px 10px; cursor: pointer;">Add</button>
               </form>
             <% } %>
           </td>
