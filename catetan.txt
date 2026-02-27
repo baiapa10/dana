@@ -1,0 +1,117 @@
+CATATAN PENGECEKAN REQUIREMENT
+Project: d:\Hacktiv8\Fase1\test
+
+Keterangan:
+- ? = sudah terpenuhi
+- x = belum/kurang sesuai requirement
+
+==================================================
+REQUIREMENT ROUTES
+==================================================
+1) Minimal 2 route GET dan 1 route POST -> ?
+   Bukti kode:
+   - GET: routes/login.js -> router.get('/register'), router.get('/login')
+   - GET: routes/home.js -> router.get('/')
+   - POST: routes/login.js -> router.post('/register'), router.post('/login')
+
+2) Terdapat route untuk logout -> ?
+   Bukti kode:
+   - routes/login.js -> router.get('/logout', Controller.logout)
+
+==================================================
+REQUIREMENT APLIKASI
+==================================================
+1) Ada fitur search/sort (pakai OP sequelize) -> ?
+   Bukti kode:
+   - models/merchant.js -> static searchAndSort()
+   - memakai Op.iLike dan order dinamis
+
+2) Ada static method di model -> ?
+   Bukti kode:
+   - models/user.js -> static findByEmail(email)
+   - models/merchant.js -> static searchAndSort(...)
+
+3) Ada instance method / getter di model -> ?
+   Bukti kode:
+   - models/user.js -> checkPassword(...) (instance method)
+   - models/user.js -> get maskedPhone() (getter)
+
+4) Validasi sequelize beragam + ditampilkan ke page -> ?
+   Bukti kode:
+   - models/user.js/profile.js/wallet.js/merchant.js: notNull, notEmpty, len, isEmail, isNumeric, isInt, min, isIn, custom minimumBudget
+   - controllers/controller.js -> parseSequelizeError + render register dengan errors
+
+5) Menggunakan method sequelize untuk CRUD -> ?
+   Bukti kode:
+   - Create: User.create, Profile.create, Wallet.create, Merchant.create
+   - Read: findByPk, findAll, findOne
+   - Update: wallet.update, merchant.update, profile.update
+   - Delete: merchant.destroy
+
+6) Terdapat hooks -> ?
+   Bukti kode:
+   - models/user.js -> beforeCreate, beforeUpdate, beforeBulkCreate (hash password)
+
+7) Membuat dan menggunakan helper -> ?
+   Bukti kode:
+   - helpers/format.js -> formatCurrency
+   - app.js -> res.locals.helpers = helpers
+   - dipakai di views (dashboard/home)
+
+8) Menggunakan promise chaining (notif delete) -> ?
+   Bukti kode:
+   - controllers/controller.js -> static deleteMerchant(req,res) pakai .then().then().catch()
+
+==================================================
+REQUIREMENT PAGES
+==================================================
+1) Landing page -> ?
+   Bukti kode:
+   - views/landing.ejs
+   - routes/index.js -> router.get('/', Controller.landing)
+
+2) Register & login page -> ?
+   Bukti kode:
+   - views/register.ejs, views/login.ejs
+   - routes/login.js
+
+3) 1 page menampilkan gabungan >= 2 tabel (eager loading) -> ?
+   Bukti kode:
+   - controllers/controller.js -> dashboard(): User include Profile + Wallet + Transaction + Merchant
+   - render ke views/dashboard.ejs
+
+==================================================
+REQUIREMENT EXPLORE
+==================================================
+1) Login system dengan middleware, session, bcryptjs -> x
+   Status detail:
+   - Middleware: ? (middlewares/auth.js)
+   - Session: ? (app.js, express-session)
+   - bcryptjs: x (saat ini pakai package 'bcrypt' di models/user.js)
+
+2) Fitur MVP pakai package tambahan (di luar lecture) -> ?
+   Bukti kode:
+   - controllers/controller.js pakai pdfkit untuk export PDF
+
+==================================================
+TEMA PAIR PROJECT (ENTITAS USER WAJIB)
+==================================================
+Spesifikasi pada soal screenshot:
+- username (optional)
+- email unique + required + email format
+- password min 8
+- role di [buyer, seller]
+
+Hasil di project ini:
+- username -> x (tidak ada, diganti name)
+- email unique/required/format -> ?
+- password min 8 -> x (sekarang min 6)
+- role buyer/seller -> x (sekarang user/merchant)
+
+==================================================
+KESIMPULAN
+==================================================
+Secara umum requirement aplikasi utama sudah banyak yang terpenuhi.
+Yang masih belum jika mengikuti screenshot secara ketat:
+1) penggunaan bcryptjs (sudah bcryptjs)
+2) field/aturan User wajib tema (username, password min 8, role buyer/seller)

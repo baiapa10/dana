@@ -18,16 +18,18 @@
       <table border="1" cellpadding="6" cellspacing="0">
         <tr>
           <th>ID</th>
-          <th>Amount</th>
           <th>User</th>
+          <th>Amount</th>
+          <th>Quantity</th>
         </tr>
         <% merchant.Transactions.forEach((el) => { %>
           <tr>
             <td><%= el.id %></td>
-            <td><%= el.formattedAmount %></td>
             <td>
               <%= el.Wallet && el.Wallet.User ? el.Wallet.User.name : '-' %>
             </td>
+            <td><%= el.formattedAmount %></td>
+            <td><%= el.quantity %></td>
           </tr>
         <% }) %>
       </table>

@@ -18,10 +18,19 @@
 
     <p>Total Budget Bulanan: <strong><%= helpers.formatCurrency(userData && userData.Profile ? userData.Profile.monthlyBudget : 0, currency) %></strong></p>
     <p>Total Terpakai: <strong><%= helpers.formatCurrency(totalSpent, currency) %></strong></p>
-    <p>Sisa Budget: <strong><%= helpers.formatCurrency(remainingBudget, currency) %></strong></p>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px;">
+      <p style="margin: 0;">Sisa Budget: <strong><%= helpers.formatCurrency(remainingBudget, currency) %></strong></p>
+      <button type="button" id="toggleTopup">Top Up</button>
+    </div>
+
+    <form id="topupForm" action="/homes/topup" method="post" style="display: none; margin-bottom: 12px;">
+      <input type="number" name="amount" min="1" placeholder="Nominal top up" required>
+      <button type="submit">Submit Top Up</button>
+    </form>
 
     <p><a href="/homes/export/pdf">Export PDF</a></p>
-    <p><a href="/merchants">Pilih Merchant + Add Transaksi</a></p>
+      <p><a href="/merchants"><button>Tambah Investasi?</button></a></p>
 
     <h3>Riwayat Transaksi</h3>
 
@@ -46,5 +55,16 @@
       <p>Belum ada transaksi.</p>
     <% } %>
   </main>
+
+  <script>
+    const topupButton = document.getElementById('toggleTopup');
+    const topupForm = document.getElementById('topupForm');
+
+    if (topupButton && topupForm) {
+      topupButton.addEventListener('click', () => {
+        topupForm.style.display = topupForm.style.display === 'none' ? 'block' : 'none';
+      });
+    }
+  </script>
 </body>
 </html>

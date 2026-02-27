@@ -19,9 +19,6 @@ module.exports = (sequelize, DataTypes) => {
         notNull: {
           msg: 'Monthly budget wajib diisi'
         },
-        isInt: {
-          msg: 'Monthly budget harus berupa angka bulat'
-        },
         minimumBudget(value) {
           if (Number(value) < 100000) {
             throw new Error('Monthly budget minimal 100000');

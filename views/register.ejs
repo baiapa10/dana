@@ -1,66 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register</title>
+  <title>Register - Bobot</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 0; }
+    .wrapper { display: flex; width: 860px; background: #fff; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); overflow: hidden; }
+    .left-panel { width: 300px; flex-shrink: 0; background: #2c3e50; display: flex; flex-direction: column; justify-content: center; padding: 48px 36px; }
+    .left-panel .logo { font-size: 2rem; font-weight: 700; color: #e8f4f8; }
+    .left-panel .logo span { color: #3498db; }
+    .left-panel .tagline { font-size: 0.88rem; color: #bdc3c7; line-height: 1.6; margin-top: 12px; }
+    .left-panel .features { margin-top: 28px; list-style: none; }
+    .left-panel .features li { font-size: 0.83rem; color: #95a5a6; padding: 5px 0; }
+    .left-panel .features li::before { content: '→ '; color: #3498db; }
+    .right-panel { flex: 1; padding: 36px 40px; }
+    .right-panel h2 { font-size: 1.4rem; color: #2c3e50; margin-bottom: 4px; }
+    .right-panel .sub { font-size: 0.84rem; color: #7f8c8d; margin-bottom: 20px; }
+    .alert-error-list { background: #fdecea; border-left: 3px solid #e74c3c; padding: 10px 14px; border-radius: 6px; margin-bottom: 14px; }
+    .alert-error-list ul { padding-left: 16px; }
+    .alert-error-list li { font-size: 0.83rem; color: #c0392b; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { display: block; font-size: 0.8rem; color: #555; margin-bottom: 5px; font-weight: 500; }
+    .form-group input, .form-group select { width: 100%; padding: 9px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.88rem; color: #2c3e50; outline: none; transition: border-color 0.2s; background: #fff; }
+    .form-group input:focus, .form-group select:focus { border-color: #3498db; }
+    .input-prefix-wrap { display: flex; align-items: center; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; transition: border-color 0.2s; }
+    .input-prefix-wrap:focus-within { border-color: #3498db; }
+    .input-prefix { padding: 9px 10px; background: #f4f6f8; color: #7f8c8d; font-size: 0.8rem; font-weight: 600; border-right: 1px solid #ddd; white-space: nowrap; }
+    .input-prefix-wrap input { border: none; border-radius: 0; flex: 1; }
+    .input-prefix-wrap input:focus { border: none; outline: none; }
+    .role-selector { display: flex; gap: 10px; }
+    .role-option { flex: 1; }
+    .role-option input[type="radio"] { display: none; }
+    .role-option label { display: block; padding: 9px 12px; border: 1px solid #ddd; border-radius: 6px; text-align: center; cursor: pointer; font-size: 0.83rem; color: #555; font-weight: 500; transition: all 0.2s; }
+    .role-option label .role-icon { display: block; font-size: 1.1rem; margin-bottom: 2px; }
+    .role-option input[type="radio"]:checked + label { border-color: #2c3e50; background: #2c3e50; color: #fff; }
+    .btn-submit { width: 100%; padding: 11px; background: #2c3e50; color: #fff; border: none; border-radius: 6px; font-size: 0.95rem; cursor: pointer; margin-top: 4px; transition: background 0.2s; }
+    .btn-submit:hover { background: #34495e; }
+    .link-row { text-align: center; margin-top: 14px; font-size: 0.82rem; color: #7f8c8d; }
+    .link-row a { color: #3498db; text-decoration: none; }
+    .link-row a:hover { text-decoration: underline; }
+  </style>
 </head>
 <body>
-  <%- include('header') %>
-
-  <main style="padding: 16px; max-width: 560px;">
-    <h2>Register</h2>
-
-    <% if (errors && errors.length) { %>
-      <ul style="color: red;">
-        <% errors.forEach((err) => { %>
-          <li><%= err %></li>
-        <% }) %>
+  <div class="wrapper">
+    <div class="left-panel">
+      <div class="logo">Bo<span>bot</span></div>
+      <p class="tagline">Daftar sekarang dan mulai kelola keuangan Anda lebih terorganisir.</p>
+      <ul class="features">
+        <li>Gratis untuk memulai</li>
+        <li>Setup hanya beberapa menit</li>
+        <li>Data aman &amp; terenkripsi</li>
+        <li>Support 24 jam</li>
       </ul>
-    <% } %>
+    </div>
+    <div class="right-panel">
+      <h2>Buat Akun Baru</h2>
+      <p class="sub">Isi semua data di bawah untuk mendaftar.</p>
 
-    <form action="/register" method="post">
-      <div style="margin-bottom: 8px;">
-        <label>Nama</label><br>
-        <input type="text" name="name" value="<%= oldInput.name || '' %>">
-      </div>
+      <% if (errors && errors.length) { %>
+        <div class="alert-error-list">
+          <ul>
+            <% errors.forEach((err) => { %><li><%= err %></li><% }) %>
+          </ul>
+        </div>
+      <% } %>
 
-      <div style="margin-bottom: 8px;">
-        <label>Email</label><br>
-        <input type="email" name="email" value="<%= oldInput.email || '' %>">
-      </div>
+      <form action="/register" method="post">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Nama Lengkap</label>
+            <input type="text" name="name" value="<%= oldInput.name || '' %>" placeholder="Masukkan nama lengkap">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" value="<%= oldInput.email || '' %>" placeholder="contoh@email.com">
+          </div>
+          <div class="form-group">
+            <label>Nomor Telepon</label>
+            <input type="tel" name="phone" value="<%= oldInput.phone || '' %>" placeholder="08xxxxxxxxxx">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Minimal 6 karakter">
+          </div>
+          <div class="form-group" id="budget-group">
+            <label>Monthly Budget</label>
+            <div class="input-prefix-wrap">
+              <span class="input-prefix">IDR</span>
+              <input type="number" id="monthlyBudget" name="monthlyBudget" value="<%= oldInput.monthlyBudget || '' %>">
+            </div>
+          </div>
+          <div class="form-group" id="currency-group">
+            <label>Currency</label><br>
+        <input type="text" id="currency" name="currency" value="<%= oldInput.currency || 'IDR' %>">
+          </div>
+          <div class="form-group full">
+            <label>Daftar sebagai</label>
+            <div class="role-selector">
+              <div class="role-option">
+                <input type="radio" id="role-user" name="role" value="user" <%= (!oldInput.role || oldInput.role === 'user') ? 'checked' : '' %>>
+                <label for="role-user"><span class="role-icon">👤</span> User</label>
+              </div>
+              <div class="role-option">
+                <input type="radio" id="role-merchant" name="role" value="merchant" <%= oldInput.role === 'merchant' ? 'checked' : '' %>>
+                <label for="role-merchant"><span class="role-icon">🏪</span> Merchant</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn-submit">Daftar Sekarang</button>
+      </form>
+      <div class="link-row">Sudah punya akun? <a href="/login">Login di sini</a></div>
+    </div>
+  </div>
+  <script>
+    const roleUserEl = document.getElementById('role-user');
+    const roleMerchantEl = document.getElementById('role-merchant');
+    const budgetGroupEl = document.getElementById('budget-group');
+    const currencyGroupEl = document.getElementById('currency-group');
+    const budgetInputEl = document.getElementById('monthlyBudget');
+    const currencyInputEl = document.getElementById('currency');
 
-      <div style="margin-bottom: 8px;">
-        <label>Password</label><br>
-        <input type="password" name="password">
-      </div>
+    function syncBudgetCurrencyVisibility() {
+      const isUser = roleUserEl && roleUserEl.checked;
+      if (budgetGroupEl) budgetGroupEl.style.display = isUser ? 'block' : 'none';
+      if (currencyGroupEl) currencyGroupEl.style.display = isUser ? 'block' : 'none';
 
-      <div style="margin-bottom: 8px;">
-        <label>Phone</label><br>
-        <input type="text" name="phone" value="<%= oldInput.phone || '' %>">
-      </div>
+      if (!isUser) {
+        if (budgetInputEl) budgetInputEl.value = '';
+        if (currencyInputEl) currencyInputEl.value = '';
+      } else if (currencyInputEl && !currencyInputEl.value) {
+        currencyInputEl.value = 'IDR';
+      }
+    }
 
-      <div style="margin-bottom: 8px;">
-        <label>Role</label><br>
-        <select name="role" >
-          <option value="" <%= !oldInput.role ? 'selected' : '' %> disabled>-- pilih role --</option>
-          <option value="user" <%= oldInput.role === 'user' ? 'selected' : '' %>>User</option>
-          <option value="merchant" <%= oldInput.role === 'merchant' ? 'selected' : '' %>>Merchant</option>
-        </select>
-      </div>
-
-      <div style="margin-bottom: 8px;">
-        <label>Monthly Budget</label><br>
-        <input type="number" name="monthlyBudget" value="<%= oldInput.monthlyBudget || '' %>">
-      </div>
-
-      <div style="margin-bottom: 8px;">
-        <label>Currency</label><br>
-        <input type="text" name="currency" value="<%= oldInput.currency || 'IDR' %>">
-      </div>
-
-      <button type="submit">Register</button>
-    </form>
-  </main>
+    if (roleUserEl) roleUserEl.addEventListener('change', syncBudgetCurrencyVisibility);
+    if (roleMerchantEl) roleMerchantEl.addEventListener('change', syncBudgetCurrencyVisibility);
+    syncBudgetCurrencyVisibility();
+  </script>
 </body>
 </html>
